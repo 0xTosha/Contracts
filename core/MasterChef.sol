@@ -41,17 +41,6 @@ contract MasterChef is Ownable {
     uint256 public lastRewardBlock;
 
     event Harvest(address indexed user, uint256 indexed pid, uint256 amount);
-
-    event SetReserveFundsAddress(
-        address indexed oldAddress,
-        address indexed newAddress
-    );
-
-    event SetFarmingRewarderAddress(
-        address indexed oldAddress,
-        address indexed newAddress
-    );
-
     event UpdateEmissionRate(address indexed user, uint256 _tokensPerSec);
     event UpdateRewardsRate(address indexed user, uint256 _rewardsPerSec);
 
@@ -104,13 +93,11 @@ contract MasterChef is Ownable {
     // Update reserve funds address by the owner
     function updateReserveFundsAddress(address _reserveFundsAddress) public onlyOwner {
         reserveFundsAddress = _reserveFundsAddress;
-        emit SetReserveFundsAddress(reserveFundsAddress, _reserveFundsAddress);
     }
 
     // Update farming rewarder address by the owner
     function updateFarmingRewarderAddress(address _farmingRewarderAddress) public onlyOwner {
         farmingRewarderAddress = _farmingRewarderAddress;
-        emit SetFarmingRewarderAddress(farmingRewarderAddress, _farmingRewarderAddress);
     }
 
     function updateEmissionRate(uint256 _tokensPerBlock) public onlyOwner {
