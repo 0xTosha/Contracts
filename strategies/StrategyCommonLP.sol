@@ -53,10 +53,10 @@ contract StrategyCommonLP is StratManagerLP, FeeManagerLP, GasThrottler {
         address _unirouter,
         address _keeper,
         address _strategist,
-        address _beefyFeeRecipient,
+        address _toshaFeeRecipient,
         address[] memory _outputToNativeRoute,
         address[] memory _nativeToCoreRoute
-    ) StratManagerLP(_keeper, _strategist, _unirouter, _vault, _beefyFeeRecipient) public {
+    ) StratManagerLP(_keeper, _strategist, _unirouter, _vault, _toshaFeeRecipient) public {
         want = _want;
         poolId = _poolId;
         chef = _chef;
@@ -135,8 +135,8 @@ contract StrategyCommonLP is StratManagerLP, FeeManagerLP, GasThrottler {
         uint256 feeBal = IERC20(native).balanceOf(address(this)).mul(45).div(1000);
         uint256 callFeeAmount = feeBal.mul(callFee).div(MAX_FEE);
         IERC20(native).safeTransfer(callFeeRecipient, callFeeAmount);
-        uint256 beefyFeeAmount = feeBal.mul(beefyFee).div(MAX_FEE);
-        IERC20(native).safeTransfer(beefyFeeRecipient, beefyFeeAmount);
+        uint256 toshaFeeAmount = feeBal.mul(toshaFee).div(MAX_FEE);
+        IERC20(native).safeTransfer(toshaFeeRecipient, toshaFeeAmount);
         uint256 strategistFee = feeBal.mul(STRATEGIST_FEE).div(MAX_FEE);
         IERC20(native).safeTransfer(strategist, strategistFee);
     }

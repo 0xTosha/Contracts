@@ -7,7 +7,7 @@ import "../libs/Pausable.sol";
 
 contract StratManagerLP is Ownable, Pausable {
     /**
-     * @dev Beefy Contracts:
+     * @dev Tosha Contracts:
      * {keeper} - Address to manage a few lower risk features of the strat
      * {strategist} - Address of the strategy author/deployer where strategist fee will go.
      * {vault} - Address of the vault that controls the strategy's funds.
@@ -17,27 +17,27 @@ contract StratManagerLP is Ownable, Pausable {
     address public strategist;
     address public unirouter;
     address public vault;
-    address public beefyFeeRecipient;
+    address public toshaFeeRecipient;
     /**
      * @dev Initializes the base strategy.
      * @param _keeper address to use as alternative owner.
      * @param _strategist address where strategist fees go.
      * @param _unirouter router to use for swaps
      * @param _vault address of parent vault.
-     * @param _beefyFeeRecipient address where to send Beefy's fees.
+     * @param _toshaFeeRecipient address where to send Tosha's fees.
      */
     constructor(
         address _keeper,
         address _strategist,
         address _unirouter,
         address _vault,
-        address _beefyFeeRecipient
+        address _toshaFeeRecipient
     ) public {
         keeper = _keeper;
         strategist = _strategist;
         unirouter = _unirouter;
         vault = _vault;
-        beefyFeeRecipient = _beefyFeeRecipient;
+        toshaFeeRecipient = _toshaFeeRecipient;
     }
     // checks that caller is either owner or keeper.
     modifier onlyManager() {
@@ -74,11 +74,11 @@ contract StratManagerLP is Ownable, Pausable {
         vault = _vault;
     }
     /**
-     * @dev Updates beefy fee recipient.
-     * @param _beefyFeeRecipient new beefy fee recipient address.
+     * @dev Updates tosha fee recipient.
+     * @param _toshaFeeRecipient new tosha fee recipient address.
      */
-    function setBeefyFeeRecipient(address _beefyFeeRecipient) external onlyOwner {
-        beefyFeeRecipient = _beefyFeeRecipient;
+    function setToshaFeeRecipient(address _toshaFeeRecipient) external onlyOwner {
+        toshaFeeRecipient = _toshaFeeRecipient;
     }
     /**
      * @dev Function to synchronize balances before new user deposit.
