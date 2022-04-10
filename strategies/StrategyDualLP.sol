@@ -17,7 +17,7 @@ import "./StratManagerLP.sol";
 import "./FeeManagerLP.sol";
 
 
-contract StrategyCommonLP is StratManagerLP, FeeManagerLP, GasThrottler {
+contract StrategyDualLP is StratManagerLP, FeeManagerLP, GasThrottler {
     using SafeERC20 for IERC20;
     using SafeMath for uint256;
 

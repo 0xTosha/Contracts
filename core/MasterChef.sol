@@ -23,7 +23,7 @@ contract MasterChef is Ownable {
     address public farmingRewarderAddress;
 
     // Reward Pool address
-    address public rewardPoolAddress;
+    address public immutable rewardPoolAddress;
 
     uint256 public rewardsPerBlock;
 
@@ -40,7 +40,6 @@ contract MasterChef is Ownable {
     // The block number when token mining starts
     uint256 public lastRewardBlock;
 
-    event Harvest(address indexed user, uint256 indexed pid, uint256 amount);
     event UpdateEmissionRate(address indexed user, uint256 _tokensPerSec);
     event UpdateRewardsRate(address indexed user, uint256 _rewardsPerSec);
 
@@ -66,8 +65,11 @@ contract MasterChef is Ownable {
     }
 
    function harvest() public {
+        require(
+                block.number > lastRewardBlock,
+                "Already harvested for latest block"
+            );
 
-     if (block.number > lastRewardBlock) {
         uint256 blocksSinceLastReward = block.number - lastRewardBlock;
 
         // rewards for these many blocks
@@ -80,14 +82,13 @@ contract MasterChef is Ownable {
 
         uint256 rewardsForPool = (blocksSinceLastReward * rewardsPerBlock);
         if (rewardsForFarming > rewardsForPool) {
-          token.mint(rewardPoolAddress, rewardsForPool);
-          token.mint(farmingRewarderAddress, rewardsForFarming - rewardsForPool);
+            token.mint(rewardPoolAddress, rewardsForPool);
+            token.mint(farmingRewarderAddress, rewardsForFarming - rewardsForPool);
         } else {
-          token.mint(rewardPoolAddress, rewardsForFarming);
+            token.mint(rewardPoolAddress, rewardsForFarming);
         }
 
         lastRewardBlock = block.number;
-      }
     }
 
     // Update reserve funds address by the owner
@@ -112,7 +113,7 @@ contract MasterChef is Ownable {
     function updateRewardsRate(uint256 _rewardsPerBlock) public onlyOwner {
         require(
             _rewardsPerBlock <= 4e18,
-            "maximum emission rate of 4 tokens per block exceeded"
+            "maximum reward rate of 4 tokens per block exceeded"
         );
         rewardsPerBlock = _rewardsPerBlock;
         emit UpdateRewardsRate(msg.sender, _rewardsPerBlock);

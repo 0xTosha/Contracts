@@ -13,16 +13,18 @@ contract TOSHA is ERC20 {
     using SafeERC20 for IERC20;
     using Address for address;
     using SafeMath for uint256;
-
+    uint256 public immutable maxSupply;
     address public governance;
     mapping(address => bool) public minters;
 
-    constructor() public ERC20("Tosha.IO", "TOSHA") {
+    constructor(uint256 _maxSupply) public ERC20("ToshaDAO", "TOSHA") {
+        maxSupply = _maxSupply;
         governance = msg.sender;
     }
 
     function mint(address account, uint256 amount) public {
         require(minters[msg.sender], "!minter");
+        require(totalSupply().add(amount) <= maxSupply, "Cannot mint more than maxSupply");
         _mint(account, amount);
     }
 
